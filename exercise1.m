@@ -33,16 +33,18 @@ iv.toEquilibrium();
 %% 
 B0=1.0;
 tp=10e-6;
-B1=5.9e-3;
+angle=pi/2;
+B1=angle/(gamma*tp);
 f0=42.58e6;
-ph=pi/4;
+ph=pi/2;
 rf=SincPulse(B1,f0,0,tp);
 powspec(rf);
 seemri(iv,B0,rf);
 iv.toEquilibrium();
 %%
-rf=SincPulse(B1,f0-0.6e6,0,tp);
+rf=SincPulse(B1,f0-0.6e6,pi/2,tp);
 alpha = acos(iv.M(3)/norm(iv.M));
+
 seemri(iv, B0, rf, 'Plot', false);
 iv.toEquilibrium();
 %%
@@ -52,10 +54,9 @@ for i=dfs
     rf=SincPulse(B1,f0-i,0,tp);
     seemri(iv, B0, rf, 'Plot', false);
     alpha = acos(iv.M(3)/norm(iv.M));
-    alphas=[alphas,alpha];
+    alphas=[alphas;alpha];
     iv.toEquilibrium();
 end
-alphas'
 [FB1e, fs] = powspec(rf);
 %%
 figure;
